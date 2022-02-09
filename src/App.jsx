@@ -1,45 +1,46 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  useEffect(() => {
+    fetch('http://localhost:5000/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+          query {
+            allPersons {
+              id
+              name
+              age
+              phone
+              address {
+                street
+                city
+              }
+              canDrink
+            }
+          }
+        `
+      }),
+    }).then(res => res.json())
+      .then(res => {
+        console.log(res);
+      });
+  }, []);
+  
+	return (
+		<div className='App'>
+			<header className='App-header'>
+				<img src={logo} className='App-logo' alt='logo' />
+				<p>GraphQL + React!</p>
+			</header>
+		</div>
+	);
+};
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
-}
-
-export default App
+export default App;
