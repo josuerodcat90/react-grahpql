@@ -16,7 +16,7 @@ export const PersonForm = ({ notifyMessage }) => {
 			notifyMessage(error.graphQLErrors[0].message, 'error');
 		},
 		onCompleted: () => {
-			notifyMessage('Person added successfully', 'success');
+			notifyMessage('Person added successfully ✔', 'success');
 		},
 	});
 

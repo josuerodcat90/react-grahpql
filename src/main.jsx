@@ -9,10 +9,18 @@ import {
 	ApolloProvider,
 } from '@apollo/client';
 
+const getAuthToken = () => {
+	const token = localStorage.getItem('userToken');
+	return token ? `bearer ${token}` : null;
+};
+
 const client = new ApolloClient({
 	connectToDevTools: true,
 	link: new HttpLink({
 		uri: 'http://localhost:5000',
+		headers: {
+			authorization: getAuthToken(),
+		},
 	}),
 	cache: new InMemoryCache(),
 });
