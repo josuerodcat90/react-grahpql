@@ -15,6 +15,7 @@ const App = () => {
 	const [message, setMessage] = useState('');
 	const [type, setType] = useState('');
 	const [token, setToken] = useState(() => localStorage.getItem('userToken'));
+	const [mandatory, setMandatory] = useState(0);
 	const client = useApolloClient();
 
 	if (error) return <span style='color: red;'>{error}</span>;
@@ -40,16 +41,55 @@ const App = () => {
 			<header className='App-header'>
 				<img src={logo} className='App-logo' alt='logo' />
 				{token ? (
-					<button onClick={handleLogout}>Logout</button>
+					<>
+						<button onClick={handleLogout} className='logoutButton'>
+							Logout
+						</button>
+
+						<div className='actionButtonsContainer'>
+							<h3>What do you want to do?</h3>
+							{mandatory !== 2 && (
+								<button
+									className='addPersonActionButton'
+									onClick={() => setMandatory(2)}
+								>
+									Add person
+								</button>
+							)}
+							{mandatory !== 1 && (
+								<button
+									className='editPhoneActionButton'
+									onClick={() => setMandatory(1)}
+								>
+									Edit phone
+								</button>
+							)}
+							{mandatory !== 0 && (
+								<button
+									className='showPersonsActionButton'
+									onClick={() => setMandatory(0)}
+								>
+									Show persons
+								</button>
+							)}
+						</div>
+						{mandatory === 2 && <PersonForm notifyMessage={notifyMessage} />}
+						{mandatory === 1 && <PhoneForm notifyMessage={notifyMessage} />}
+						{loading ? (
+							<b style={{ color: 'green' }}>Loading...</b>
+						) : (
+							<div className='personsList'>
+								{mandatory === 0 && (
+									<Person
+										persons={data?.allPersons}
+										notifyMessage={notifyMessage}
+									/>
+								)}
+							</div>
+						)}
+					</>
 				) : (
 					<LoginForm setToken={setToken} notifyMessage={notifyMessage} />
-				)}
-				<PersonForm notifyMessage={notifyMessage} />
-				<PhoneForm notifyMessage={notifyMessage} />
-				{loading ? (
-					<b style={{ color: 'green' }}>Loading...</b>
-				) : (
-					<Person persons={data?.allPersons} />
 				)}
 			</header>
 		</div>

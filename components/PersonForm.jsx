@@ -40,33 +40,38 @@ export const PersonForm = ({ notifyMessage }) => {
 	};
 
 	return (
-		<>
+		<div className='personForm'>
 			<h2>Add new Person</h2>
 			<form onSubmit={handleSubmit}>
+				<label htmlFor='name'>Name</label>
 				<input
 					type='text'
 					placeholder='Name'
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 				/>
+				<label htmlFor='age'>Age</label>
 				<input
 					type='number'
 					placeholder='Age'
 					value={age}
 					onChange={(e) => setAge(parseInt(e.target.value))}
 				/>
+				<label htmlFor='phone'>Phone</label>
 				<input
 					type='text'
 					placeholder='Phone'
 					value={phone}
 					onChange={(e) => setPhone(e.target.value)}
 				/>
+				<label htmlFor='street'>Street</label>
 				<input
 					type='text'
 					placeholder='Street'
 					value={street}
 					onChange={(e) => setStreet(e.target.value)}
 				/>
+				<label htmlFor='city'>City</label>
 				<input
 					type='text'
 					placeholder='City'
@@ -76,6 +81,6 @@ export const PersonForm = ({ notifyMessage }) => {
 				<br />
 				<button type='submit'>Add person</button>
 			</form>
-		</>
+		</div>
 	);
 };

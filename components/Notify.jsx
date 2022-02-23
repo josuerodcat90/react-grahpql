@@ -16,6 +16,11 @@ export const Notify = ({ message, type }) => {
 				top: 10,
 				border: '1px solid white',
 				borderRadius: '5px',
+				zIndex: 100,
+
+				// animate slide in
+				animation: 'slideIn 0.5s ease-in-out',
+				animationFillMode: 'forwards',
 			}}
 		>
 			{message}

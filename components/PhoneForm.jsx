@@ -29,15 +29,17 @@ export const PhoneForm = ({ notifyMessage }) => {
 	};
 
 	return (
-		<>
+		<div className='phoneForm'>
 			<h2>Edit phone number</h2>
 			<form onSubmit={handleSubmit}>
+				<label htmlFor='name'>Name</label>
 				<input
 					type='text'
 					placeholder='Name'
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 				/>
+				<label htmlFor='phone'>Phone</label>
 				<input
 					type='text'
 					placeholder='Phone'
@@ -47,6 +49,6 @@ export const PhoneForm = ({ notifyMessage }) => {
 				<br />
 				<button type='submit'>Change number</button>
 			</form>
-		</>
+		</div>
 	);
 };
