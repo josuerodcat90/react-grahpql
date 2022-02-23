@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { FIND_PERSON } from '../graphql/queries';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { All_PERSONS, FIND_PERSON } from '../graphql/queries';
+import { DELETE_PERSON } from '../graphql/mutations';
 
-export const Person = ({ persons }) => {
+export const Person = ({ persons, notifyMessage }) => {
 	const [findPerson, result] = useLazyQuery(FIND_PERSON);
 	const [person, setPerson] = useState(null);
 
+	const [deletePerson] = useMutation(DELETE_PERSON, {
+		refetchQueries: [{ query: All_PERSONS }],
+		onError: (error) => {
+			notifyMessage(error.graphQLErrors[0].message, 'error');
+		},
+		onCompleted: (data) => {
+			notifyMessage(`${data.deletePerson} 🚷`, 'success');
+		},
+	});
+
 	const showPerson = (name) => {
 		findPerson({ variables: { name } });
+	};
+
+	const handleDeletePerson = (id) => {
+		deletePerson({ variables: { id } });
+		setPerson(null);
 	};
 
 	useEffect(() => {
@@ -18,7 +34,7 @@ export const Person = ({ persons }) => {
 
 	if (person) {
 		return (
-			<div>
+			<div className='singlePersonContainer'>
 				<h3>~~{person.name}~~</h3>
 				<div>Age: {person.age}</div>
 				<div>Phone: {person.phone ? person.phone : 'No phone added'}</div>
@@ -26,7 +42,10 @@ export const Person = ({ persons }) => {
 				<div>City: {person.address.city}</div>
 				<div>Can Drink: {person.canDrink}</div>
 				<br />
-				<button onClick={() => setPerson(null)}>Clear</button>
+				<button onClick={() => setPerson(null)}>Return</button>{' '}
+				<button onClick={() => handleDeletePerson(person.id)}>Delete</button>
+				<br />
+				<p></p>
 			</div>
 		);
 	}
@@ -34,8 +53,8 @@ export const Person = ({ persons }) => {
 	if (persons == null) return <div>No Data...</div>;
 
 	return (
-		<>
-			<h3>Persons</h3>
+		<div className='personsContainer'>
+			<h3>Persons List</h3>
 			{persons.map((person) => (
 				<div
 					key={person.id}
@@ -46,6 +65,6 @@ export const Person = ({ persons }) => {
 					{person.name} {person.phone}
 				</div>
 			))}
-		</>
+		</div>
 	);
 };

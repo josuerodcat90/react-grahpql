@@ -54,9 +54,6 @@ export const LOGIN = gql`
 
 export const DELETE_PERSON = gql`
 	mutation deletePerson($id: ID!) {
-		deletePerson(id: $id) {
-			id
-			name
-		}
+		deletePerson(id: $id)
 	}
 `;
